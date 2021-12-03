@@ -1,4 +1,4 @@
-import { lineMP } from '../lineMP.mjs';
+import { lineMP } from './lineMP.mjs';
 
 function test() {
     let P, Q, R;
