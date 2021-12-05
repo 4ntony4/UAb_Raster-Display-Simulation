@@ -6,5 +6,5 @@
 
 [PT] Este projeto foi realizado no âmbito da Unidade Curricular de **Computação Gráfica** da Licenciatura em Engenharia Informática da Universidade Aberta no ano letivo de 2021-22.
 
-## <a href="https://replit.com/"><img src="img/replit_logo.svg" alt="replit_logo" width="35"></a> Replit
+## <a href="https://replit.com/"><img src="https://raw.githubusercontent.com/4ntony4/UAb/bd3ceaf8d913be6d447fa2705434bc1b7de3261d/img/logos/replit/replit_logo.svg" alt="Replit" width="35"></a> Replit
 Run it on Replit [here](https://UAbrasterDisplaySimulation.diogoantao.repl.co).
