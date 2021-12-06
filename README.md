@@ -1,4 +1,4 @@
-# UAb_rasterDisplaySimulation
+# Raster Display Simulation
 
 [![Replit Ready to Run](https://img.shields.io/badge/Replit-Ready_to_Run-informational?logo=replit&labelColor=white)](https://UAbrasterDisplaySimulation.diogoantao.repl.co)
 
