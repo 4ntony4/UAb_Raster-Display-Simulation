@@ -27,9 +27,8 @@ const red = new THREE.Color( 0xff0000 );
 const blue = new THREE.Color( 0x0000ff );
 const yellow = new THREE.Color( 0xffff00 );
 const black = new THREE.Color( 0x000000 );
-const lightGrey = new THREE.Color( 0xf0f0f0 );
-const lightGreen = new THREE.Color( 0x00cc99 );
-const lightBlue = new THREE.Color( 0x4676ff );
+const brown = new THREE.Color( 0xa66940 );
+const blue2 = new THREE.Color( 0x4676ff );
 
 // to get the current square intersecting the mouse pointer
 let currentPosition = new THREE.Vector3( 0, 0, 0 );
@@ -93,10 +92,10 @@ function init() {
         for ( let j = minPixel; j <= maxPixel; j++ ) {
             // if i, j are both even OR i, j are both odd
             if ( ( isEven(i) && isEven(j) ) || ( !isEven(i) && !isEven(j) ) ) {
-                squares.push( makeInstanceSquare( geometry, lightGreen, i, j ) );
+                squares.push( makeInstanceSquare( geometry, brown, i, j ) );
             }
             else {
-                squares.push( makeInstanceSquare( geometry, lightBlue, i, j ) );
+                squares.push( makeInstanceSquare( geometry, blue2, i, j ) );
             }
         }
     }
