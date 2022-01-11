@@ -123,7 +123,7 @@ function makeInstanceSquare( geometry, color, i, j ) {
     const material = new THREE.MeshBasicMaterial( {
         color: color,
         transparent: true,
-        opacity: 0.6
+        opacity: 0.8
     } );
 
     const square = new THREE.Mesh( geometry, material );
