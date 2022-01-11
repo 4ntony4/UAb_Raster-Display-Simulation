@@ -57,7 +57,7 @@ function init() {
         window.innerWidth / window.innerHeight,
         1,
         10000);
-    camera.position.set( 10, -300, 200 );
+    camera.position.set( 0, -400, 270 );
     camera.lookAt( 0, 0, 0 );
 
     // initiate scene
@@ -120,7 +120,11 @@ function isEven( num ) {
 // create a single square with given geometry, color and position
 function makeInstanceSquare( geometry, color, i, j ) {
 
-    const material = new THREE.MeshBasicMaterial( {color} );
+    const material = new THREE.MeshBasicMaterial( {
+        color: color,
+        transparent: true,
+        opacity: 0.6
+    } );
 
     const square = new THREE.Mesh( geometry, material );
     
@@ -152,10 +156,10 @@ function reverseSquaresColor( object ) {
 
     // if x and y are both even OR both odd
     if ( ( isEven(x) && isEven(y) ) || ( !isEven(x) && !isEven(y) ) ) {
-        object.material.color.set( lightGreen );
+        object.material.color.set( brown );
     }
     else {
-        object.material.color.set( lightBlue );
+        object.material.color.set( blue2 );
     }
 }
 
