@@ -1,84 +1,118 @@
 function lineMP( a = {x, y}, b = {x, y} ) {
-    let vector = [];
 
-    // a.x, a.y, b.x and b.y must be integers
-    if ( allIntegers( a, b ) ) {
-        
-        // slope (declive)
-        const m = ( b.y - a.y ) / ( b.x - a.x );  
-        
-        // if b.x < a.x switch point a with b
-        if (b.x < a.x) {
-            transform1( a, b );
-        }
-        
-        if ( m >= 0 && m <= 1 ) {
+    let oct = 0;
 
-            vector = lineMPAlgorithm( a, b );
-        }
-        else if ( m < 0 && m >= -1 ) {
-
-            transform2( a, b );
- 
-            vector = lineMPAlgorithm( a, b );
-            
-            vector.forEach(p => transform2( vector[0], p ) );
-        } 
-        else if ( m > 1 ) {
-
-            transform3( a, b );
-
-            vector = lineMPAlgorithm( a, b );
-
-            vector.forEach(p => transform3( vector[0], p ) );
-        }
-        else if ( m < -1 ) {
-
-            transform4( a, b );
-            transform2( a, b );
-
-            vector = lineMPAlgorithm( a, b );
-
-            vector.forEach(p => transform2( vector[0], p ) );
-            vector.forEach(p => transform4( vector[0], p ) );
-        }
-    }
-
-    return vector;
-}
-
-// Midpoint Line Algorithm
-function lineMPAlgorithm( a = {x, y}, b = {x, y} ) {
+    const p0 = Object.assign( {}, a );
+    const p1 = Object.assign( {}, b );
     const vector = [];
 
-    const dx = b.x - a.x;
-    const dy = b.y - a.y;
-    let d = 2 * dy - dx;
-    
-    const incrE = 2 * dy;
-    const incrNE = 2 * ( dy - dx );
-    
-    let x = a.x;
-    let y = a.y;
-
-    // The start point
-    vector.push(a);
-
-    while ( x < b.x ) {
-        // Choose E (East)
-        if ( d <= 0 ) {
-            d += incrE;
-            x++;
-        }
-        // Choose NE (North East)
-        else {
-            d += incrNE;
-            x++;
-            y++;
-        }
+    // p0.x, p0.y, p1.x and p1.y must be integers
+    if ( allIntegers( p0, p1 ) ) {
         
-        // Push selected point closest to the line
-        vector.push( { x, y } );
+        // detect whether p1.x > p0.x or p1.y > p0.y and reverse the input coordinates
+        if ( Math.abs( p1.y - p0.y ) < Math.abs( p1.x - p0.x ) ) {
+
+            if ( p1.x < p0.x ) switchPoints( p0, p1 );
+        }
+        else {
+
+            if ( p1.y < p0.y ) switchPoints( p0, p1 );
+        }
+
+        let x = p0.x, y = p0.y;
+
+        let d;
+        let incrS; // simple increment - increment x or y
+        let incrD; // double increment - increment both x and y
+
+        let dx = p1.x - p0.x;
+        let dy = p1.y - p0.y;
+
+        // slope
+        const m = dy / dx;
+
+        // increments on x and y
+        let xi, yi;
+
+        // The start point
+        vector.push( p0 );
+
+        // 1st octant
+        if ( m >= 0 && m <= 1 ) oct = 1;
+        // 2nd octant
+        else if ( m > 1 ) oct = 2;
+        // 3rd octant
+        else if ( m < 0 && Math.abs( m ) >= 1 ) oct = 3;
+        // 4th octant
+        else if ( m < 0 && Math.abs( m ) < 1 ) oct = 4;
+
+        switch ( oct ) {
+
+            case 1:
+            case 4:
+                if ( dy < 0 ) {
+                    yi = -1;
+                    dy = -dy;
+                }
+                else yi = 1;
+                
+                d = 2 * dy - dx;
+                incrS = 2 * dy;
+                incrD = 2 * ( dy - dx );
+
+                while ( x < p1.x ) {
+
+                    // Choose incrD
+                    if ( d >= 0 ) {
+                        d += incrD;
+                        x++;
+                        y += yi;
+                    }
+                    // Choose incrS
+                    else {
+                        d += incrS;
+                        x++;
+                    }
+    
+                    // Push selected point closest to the line
+                    vector.push( { x, y } );
+                }
+                break;
+
+            case 2:
+            case 3:
+                if ( dx < 0 ) {
+                    xi = -1;
+                    dx = -dx;
+                }
+                else xi = 1;
+
+                d = 2 * dx - dy;
+                incrS = 2 * dx;
+                incrD = 2 * ( dx - dy );
+
+                while ( y < p1.y ) {
+
+                    // Choose incrD
+                    if ( d >= 0 ) {
+                        d += incrD;
+                        y++;
+                        x += xi;
+                    }
+                    // Choose incrS
+                    else {
+                        d += incrS;
+                        y++;
+                    }
+    
+                    // Push selected point closest to the line
+                    vector.push( { x, y } );
+                }
+                break;
+        
+            default:
+                break;
+        }
     }
 
     return vector;
@@ -93,51 +127,14 @@ function allIntegers( a = {x, y}, b = {x, y} ) {
              Number.isInteger(b.y) ) ? true : false;
 }
 
-// switch point a with b
-function transform1( a = {x, y}, b = {x, y} ) {
+function switchPoints( p0, p1 ) {
+    const aux = { x: p0.x, y: p0.y };
 
-    const aux = {x: a.x, y: a.y};
+    p0.x = p1.x;
+    p0.y = p1.y;
 
-    a.x = b.x;
-    a.y = b.y;
-
-    b.x = aux.x;
-    b.y = aux.y;  
-}
-
-// transform point B so that the slope of line segment AB is in the range 0 <= m <= 1
-// inicial slope must be in range -1 <= m < 0
-function transform2( a = {x, y}, b = {x, y} ) {
-
-    b.y = ( 2 * a.y ) - b.y;
-    
-    return b;
-}
-
-// transform point B so that the slope of line segment AB is in the range 0 <= m <= 1 
-// inicial slope must be in range m > 1
-function transform3( a = {x, y}, b = {x, y} ) {
-
-    const dx = b.x - a.x;
-    const dy = b.y - a.y;
-
-    b.x = a.x + dy;
-    b.y = a.y + dx;
-    
-    return b;
-}
-
-// transform point B so that the slope of line segment AB is in the range -1 <= m < 0
-// inicial slope must be in range m < -1
-function transform4( a = {x, y}, b = {x, y} ) {
-
-    const dx = b.x - a.x;
-    const dy = b.y - a.y;
-
-    b.x = a.x - dy;
-    b.y = a.y - dx;
-    
-    return b;
+    p1.x = aux.x;
+    p1.y = aux.y; 
 }
 
 export { lineMP };
