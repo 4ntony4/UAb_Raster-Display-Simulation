@@ -22,14 +22,6 @@ const squares = [];
 const minPixel = -10;
 const maxPixel = 10;
 
-// colors
-const red = new THREE.Color( 0xff0000 );
-const blue = new THREE.Color( 0x0000ff );
-const yellow = new THREE.Color( 0xffff00 );
-const black = new THREE.Color( 0x000000 );
-const brown = new THREE.Color( 0xa66940 );
-const blue2 = new THREE.Color( 0x4676ff );
-
 // to get the current square intersecting the mouse pointer
 let currentPosition = new THREE.Vector3( 0, 0, 0 );
 
@@ -62,11 +54,12 @@ function init() {
 
     // initiate scene
     scene = new THREE.Scene();
+	scene.background = new THREE.Color( 0x010114 );
     
     // x-axis
     const xLength = squareSide * 10 + (squareSide / 2);
     const xPoints = [];
-    const xAxisColor = blue;
+    const xAxisColor = new THREE.Color( 'blue' );
     material = new THREE.LineBasicMaterial( {color: xAxisColor} );
     xPoints.push( new THREE.Vector3( 0, 0, 0 ) );
     xPoints.push( new THREE.Vector3( xLength, 0, 0 ) );
@@ -77,7 +70,7 @@ function init() {
     // y-axis
     const yLength = squareSide * 10 + (squareSide / 2);
     const yPoints = [];
-    const yAxisColor = red;
+    const yAxisColor = new THREE.Color( 'red' );
     material = new THREE.LineBasicMaterial( {color: yAxisColor} );
     yPoints.push( new THREE.Vector3( 0, 0, 0 ) );
     yPoints.push( new THREE.Vector3( 0, yLength, 0 ) );
@@ -92,10 +85,10 @@ function init() {
         for ( let j = minPixel; j <= maxPixel; j++ ) {
             // if i, j are both even OR i, j are both odd
             if ( ( isEven(i) && isEven(j) ) || ( !isEven(i) && !isEven(j) ) ) {
-                squares.push( makeInstanceSquare( geometry, brown, i, j ) );
+                squares.push( makeInstanceSquare( geometry, 'steelblue', i, j ) );
             }
             else {
-                squares.push( makeInstanceSquare( geometry, blue2, i, j ) );
+                squares.push( makeInstanceSquare( geometry, 'white', i, j ) );
             }
         }
     }
@@ -123,7 +116,7 @@ function makeInstanceSquare( geometry, color, i, j ) {
     const material = new THREE.MeshBasicMaterial( {
         color: color,
         transparent: true,
-        opacity: 0.8
+        opacity: 0.5
     } );
 
     const square = new THREE.Mesh( geometry, material );
@@ -156,10 +149,10 @@ function reverseSquaresColor( object ) {
 
     // if x and y are both even OR both odd
     if ( ( isEven(x) && isEven(y) ) || ( !isEven(x) && !isEven(y) ) ) {
-        object.material.color.set( brown );
+        object.material.color.set( 'steelblue' );
     }
     else {
-        object.material.color.set( blue2 );
+        object.material.color.set( 'white' );
     }
 }
 
@@ -172,7 +165,7 @@ function drawLine( a = {x, y}, b = {x, y} ) {
     points.push( new THREE.Vector3( b.x * squareSide, b.y * squareSide, 0 ) );
 
     geometry = new THREE.BufferGeometry().setFromPoints(points);
-    material = new THREE.LineBasicMaterial( { color: black } );
+    material = new THREE.LineBasicMaterial( { color: 'black' } );
 
     const line = new THREE.Line( geometry, material );
 
@@ -191,7 +184,7 @@ function drawTiles( vector ) {
     geometry = new THREE.BoxGeometry( tileWidth, tileHeight, tileDepth );
     
     const material = new THREE.MeshBasicMaterial( {
-        color: yellow,
+        color: 'yellow',
         opacity: 0.5,
         transparent: true} );
     
@@ -253,7 +246,7 @@ function onDocumentKeyDown( event ) {
                 
                 if ( !squareColor.equals(red) ) {
 
-                    intersects[0].object.material.color.set( red );
+                    intersects[0].object.material.color.set( 'red' );
 
                     const pixel = {
                         x: currentPosition.x / squareSide,
