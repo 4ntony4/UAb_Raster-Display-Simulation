@@ -39,12 +39,16 @@ function lineMP( a = {x, y}, b = {x, y} ) {
 
         // 1st octant
         if ( m >= 0 && m <= 1 ) oct = 1;
+
         // 2nd octant
         else if ( m > 1 ) oct = 2;
+
         // 3rd octant
         else if ( m < 0 && Math.abs( m ) >= 1 ) oct = 3;
+
         // 4th octant
         else if ( m < 0 && Math.abs( m ) < 1 ) oct = 4;
+
 
         switch ( oct ) {
 
