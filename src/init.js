@@ -240,13 +240,15 @@ function onDocumentKeyDown( event ) {
         // keyCode 88 is key 'x'
         case 88:
 
+            const red = new THREE.Color( 'red' );
+
             if ( intersects.length > 0 ) {
 
                 const squareColor = intersects[0].object.material.color;
                 
                 if ( !squareColor.equals(red) ) {
 
-                    intersects[0].object.material.color.set( 'red' );
+                    intersects[0].object.material.color.set( red );
 
                     const pixel = {
                         x: currentPosition.x / squareSide,
